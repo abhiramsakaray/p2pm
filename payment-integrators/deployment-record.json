@@ -1,0 +1,22 @@
+{
+  "network": "baseSepolia",
+  "note": "v3: fixed INR-withdrawal circleId + setSellOrderUpi fee/allowance path. Audit-cleared (whitelistReady). SETTLEMENT_PERIOD = 10 min (testnet). Awaiting whitelist.",
+  "usdc": "0x4095fE4f1E636f11A95820BA2bB87F335Bd1040d",
+  "diamond": "0xeb0BB8E3c014D915D9B2df03aBB130a1Fb44beb9",
+  "integrator": "0x5b7F7EE0e5E81CB9B0567ba2a7a0BC712E766F1f",
+  "proxyImpl": "0x62a20930A96652e6eFcFeaBa97d4706905B91950",
+  "client": "0x086079D5e8E8557Cfa7F4311CBDDd786D930632E",
+  "deployer": "0x4f45446a6E934Fd03A353eC4DAc7Cd544f03d426",
+  "previousBuilds": [
+    {
+      "note": "v2: circleId-fixed but missing the SELL fee path",
+      "integrator": "0x48736033D58C71D52b7206f45D4D5BBBB31E6D0e",
+      "client": "0x1F6f4B93603933B600c82A5f9A18f04C9cd493FC"
+    },
+    {
+      "note": "v1: original whitelisted (circleId=0 + fee bugs)",
+      "integrator": "0xc5bC8D95a854e49cC720a06d768E9a115449cbCD",
+      "client": "0x6792B759f705f9eea818C12841bF424f1c732b3C"
+    }
+  ]
+}

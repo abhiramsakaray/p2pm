@@ -1,0 +1,27 @@
+# dependencies / build output
+node_modules/
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+dist/
+.next/
+
+# env + secrets
+.env
+.env.*
+!.env.example
+
+# preserved upstream clone metadata (local only)
+payment-integrators/.git.bak/
+
+# machine-local dev deployment addresses
+backend/local-deployment.json
+
+# editor / os
+.vscode/
+.DS_Store
+*.log
+.claude/
+
