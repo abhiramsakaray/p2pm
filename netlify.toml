@@ -1,0 +1,9 @@
+# Netlify config — the Next.js app lives in the frontend/ subfolder.
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = ".next"
+
+# Official Next.js runtime (SSR, image optimization, API routes).
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
