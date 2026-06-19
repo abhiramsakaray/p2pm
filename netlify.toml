@@ -1,9 +1,9 @@
-# Netlify config — the Next.js app lives in the frontend/ subfolder.
-# The @netlify/plugin-nextjs runtime manages the publish dir + SSR; do NOT set
-# `publish` manually or Netlify serves raw build files and 404s.
+# Next.js app in the frontend/ subfolder (monorepo). No `base` — that makes the
+# publish default to the base dir and collide with the Next.js plugin. Build from
+# the repo root into frontend/, and publish frontend/.next (≠ base = repo root).
 [build]
-  base = "frontend"
-  command = "npm run build"
+  command = "npm --prefix frontend install && npm --prefix frontend run build"
+  publish = "frontend/.next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
