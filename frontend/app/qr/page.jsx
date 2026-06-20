@@ -62,6 +62,17 @@ export default function PosQr() {
   const usdcEquiv = rate && inrNum > 0 ? inrNum / rate.rate : 0;
   const overCap = usdcEquiv > PER_TX_CAP_USDC;
 
+  // Number-pad input (mobile POS feel).
+  function press(k) {
+    setError("");
+    setInr((cur) => {
+      if (k === "del") return cur.slice(0, -1);
+      if (k === ".") return cur.includes(".") ? cur : (cur || "0") + ".";
+      const next = (cur + k).replace(/^0+(?=\d)/, "");
+      return next.length > 7 ? cur : next; // cap input length
+    });
+  }
+
   function generate() {
     setError("");
     if (!rate) return;
@@ -90,15 +101,7 @@ export default function PosQr() {
   return (
     <>
       <Nav />
-      <div className="container">
-        <h1>POS — New sale{shopLabel ? ` · ${shopLabel}` : ""}</h1>
-        <p className="muted">
-          Type the bill amount in rupees. The customer scans the QR with any
-          UPI app and pays that exact amount.
-        </p>
-        <div className="testnote">
-          🧪 Testing phase — no real INR needed; this is a test payment on Base Sepolia.
-        </div>
+      <div className="screen">
 
         {liveWidget && (
           <>
@@ -171,56 +174,41 @@ export default function PosQr() {
           </div>
         )}
 
+        {/* ── Number-pad terminal (mobile-first) ── */}
         {!limitReached && !liveWidget && !done && (
-          <div className="panel" style={{ maxWidth: 460 }}>
-            <div className="field">
-              <label>Bill amount (₹ rupees)</label>
-              <input
-                className="input"
-                type="number"
-                min="1"
-                placeholder="200"
-                value={inr}
-                onChange={(e) => setInr(e.target.value)}
-              />
-            </div>
-
-            <div className="panel" style={{ padding: 14, marginTop: 0, marginBottom: 14 }}>
-              {rate ? (
-                <>
-                  <div className="row" style={{ justifyContent: "space-between" }}>
-                    <span className="muted">You will receive (locked)</span>
-                    <strong style={{ color: "var(--accent)" }}>
-                      {inrNum > 0 ? `${usdcEquiv.toFixed(2)} USDC` : "—"}
-                    </strong>
-                  </div>
-                  <div className="row" style={{ justifyContent: "space-between", marginTop: 6 }}>
-                    <span className="muted">Rate ({rate.source})</span>
-                    <span>1 USDC = ₹{rate.rate.toFixed(2)}</span>
-                  </div>
-                  {overCap && (
-                    <p className="error" style={{ marginTop: 8 }}>
-                      Over the 50 USDC per-sale cap — max ₹
-                      {Math.floor(PER_TX_CAP_USDC * rate.rate)} per QR.
-                    </p>
-                  )}
-                </>
-              ) : (
-                <span className="muted">Fetching live rate…</span>
+          <div className="terminal">
+            <div className="t-amount">
+              <div className="t-shop">{shopLabel || "New sale"}</div>
+              <div className="t-value">₹{inr || "0"}</div>
+              <div className="t-sub">
+                {rate
+                  ? inrNum > 0
+                    ? `≈ ${usdcEquiv.toFixed(2)} USDC · you keep it`
+                    : "Enter an amount"
+                  : "Fetching live rate…"}
+              </div>
+              {overCap && (
+                <div className="t-warn">Max ₹{Math.floor(PER_TX_CAP_USDC * rate.rate)} per sale</div>
               )}
             </div>
 
-            <p className="muted" style={{ marginBottom: 12 }}>
-              {String(used)} of {String(limit)} transactions used today
-            </p>
+            <div className="keypad">
+              {["1","2","3","4","5","6","7","8","9",".","0","del"].map((k) => (
+                <button key={k} className="keypad-key" onClick={() => press(k)}>
+                  {k === "del" ? "⌫" : k}
+                </button>
+              ))}
+            </div>
+
             <button
-              className="btn"
+              className="btn t-charge"
               disabled={!ready || !rate || inrNum <= 0 || overCap}
               onClick={generate}
             >
-              Generate payment QR
+              {inrNum > 0 ? `Charge ₹${inr}` : "Charge"}
             </button>
-            {error && <p className="error">{error}</p>}
+            {error && <p className="error" style={{ textAlign: "center" }}>{error}</p>}
+            <div className="t-foot">{String(used)} / {String(limit)} sales today · 🧪 test mode</div>
           </div>
         )}
       </div>

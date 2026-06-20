@@ -242,6 +242,30 @@ p.muted { color: var(--muted); font-size: 14px; }
 /* status connection dot */
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: var(--success); margin-left: 6px; }
 
+/* ── Number-pad terminal (mobile-first POS) ── */
+.terminal {
+  max-width: 420px; margin: 0 auto; padding: 8px 16px 24px;
+  display: flex; flex-direction: column; min-height: calc(100vh - 64px);
+}
+.t-amount { text-align: center; padding: 20px 0 6px; }
+.t-shop { color: var(--muted); font-size: 13px; font-weight: 600; }
+.t-value { font-size: 52px; font-weight: 800; letter-spacing: -2px; margin: 4px 0; color: var(--text); }
+.t-sub { color: var(--muted); font-size: 14px; }
+.t-warn { color: var(--danger); font-size: 13px; font-weight: 600; margin-top: 6px; }
+.keypad {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin: 16px 0; flex: 1; align-content: center;
+}
+.keypad-key {
+  background: var(--bg-soft); border: none; border-radius: 16px;
+  padding: 18px 0; font-size: 24px; font-weight: 700; color: var(--text);
+  cursor: pointer; transition: background .1s, transform .05s;
+  -webkit-tap-highlight-color: transparent;
+}
+.keypad-key:active { background: var(--accent-soft); transform: scale(0.96); }
+.t-charge { font-size: 17px; padding: 17px; border-radius: 18px; }
+.t-foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 12px; }
+
 /* testing-phase note */
 .testnote {
   background: var(--warn-soft); color: #92600a; border: 1px solid #f5d99a;
