@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { prefsSet } from "../lib/countries";
+import { Splash } from "../components/Splash";
 
 /**
  * Routing gate:
@@ -25,9 +26,5 @@ export default function Home() {
     router.replace("/dashboard");
   }, [privyReady, authenticated, router]);
 
-  return (
-    <div className="center">
-      <p className="muted">Loading…</p>
-    </div>
-  );
+  return <Splash />;
 }

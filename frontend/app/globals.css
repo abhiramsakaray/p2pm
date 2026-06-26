@@ -335,6 +335,32 @@ p.muted { color: var(--muted); font-size: 14px; }
   border-radius: var(--r-xl); padding: 24px; margin-top: 16px; box-shadow: var(--shadow-sm);
 }
 .center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 86vh; gap: 16px; padding: 20px; }
+
+/* Branded splash — instant, on-brand wait screen (no "Loading…" flash). */
+.splash {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 22px; background: var(--bg);
+}
+.splash-logo {
+  width: 120px; height: 120px; object-fit: contain;
+  animation: splashPop .45s cubic-bezier(.2,1,.4,1) both;
+}
+@keyframes splashPop {
+  from { opacity: 0; transform: scale(.86); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.splash-dots { display: flex; gap: 7px; }
+.splash-dots i {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  animation: splashDot 1s ease-in-out infinite;
+}
+.splash-dots i:nth-child(2) { animation-delay: .15s; }
+.splash-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes splashDot {
+  0%, 100% { opacity: .3; transform: translateY(0); }
+  50%      { opacity: 1; transform: translateY(-5px); }
+}
 .qr-box { background: #fff; padding: 16px; border-radius: var(--radius); display: inline-block; box-shadow: var(--shadow); }
 .error { color: var(--danger); font-size: 13px; margin-top: 8px; }
 .success { color: var(--success); font-size: 13px; margin-top: 8px; }

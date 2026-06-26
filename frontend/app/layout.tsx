@@ -33,6 +33,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={jakarta.variable} suppressHydrationWarning>
       <head>
+        {/* Preload the splash logo so it paints with zero fetch gap, and warm
+            the Privy/Alchemy connections so auth init starts sooner. */}
+        <link rel="preload" as="image" href="/logo-mark.png" />
+        <link rel="preconnect" href="https://auth.privy.io" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://auth.privy.io" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {/* Register the service worker so the app is installable (PWA). */}
         <script
