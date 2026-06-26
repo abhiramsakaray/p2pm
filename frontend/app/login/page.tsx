@@ -10,7 +10,7 @@ import { ThemeButton } from "../../components/ThemeButton";
 import { useT } from "../../lib/i18n";
 import {
   COUNTRIES, LANGUAGES, loadCountry,
-  saveCountry, markPrefsSet, getCountry,
+  saveCountry, markPrefsSet, getCountry, prefsSet,
 } from "../../lib/countries";
 
 export default function Login() {
@@ -36,8 +36,13 @@ export default function Login() {
     },
   });
 
+  // Only bounce an authenticated user off the login page once their prefs are
+  // set — otherwise they're here precisely to pick currency/language. Without
+  // this guard, an authenticated-but-no-prefs user ping-pongs /login <-> /
+  // forever (the "/" gate sends no-prefs users back to /login), which Chrome
+  // throttles as a navigation loop.
   useEffect(() => {
-    if (ready && authenticated) router.replace("/");
+    if (ready && authenticated && prefsSet()) router.replace("/");
   }, [ready, authenticated, router]);
 
   useEffect(() => {
@@ -55,7 +60,11 @@ export default function Login() {
     // persist the picks so the rest of the app is country-aware immediately
     saveCountry(country.id);
     markPrefsSet();
-    login();
+    // Already signed in (e.g. returned here only to pick prefs)? Don't reopen
+    // the Privy modal — just proceed; "/" now routes to the dashboard since
+    // prefs are set. Otherwise start the normal login flow.
+    if (authenticated) router.replace("/");
+    else login();
   }
 
   return (
