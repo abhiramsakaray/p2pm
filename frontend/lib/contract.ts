@@ -27,7 +27,12 @@ export const INTEGRATOR_ABI = parseAbi([
   "function getDailyTxInfo(address merchant) view returns (uint256 usedToday, uint256 limit)",
   "function getMerchantCurrency(address merchant) view returns (string)",
   "function proxyAddress(address user) view returns (address)",
+  "function owner() view returns (address)",
+  "function freezeMerchant(address merchant)",
+  "function unfreezeMerchant(address merchant)",
   "event OrderPlaced(uint256 indexed orderId, address indexed user, uint256 amount)",
+  "event MerchantFrozen(address indexed merchant)",
+  "event MerchantUnfrozen(address indexed merchant)",
 ]);
 
 // Fine-grained pricing product: id 2 @ 0.01 USDC/unit, so any INR amount
