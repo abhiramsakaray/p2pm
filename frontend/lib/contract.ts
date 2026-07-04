@@ -75,6 +75,8 @@ export const INTEGRATOR_ABI = parseAbi([
   "event WithdrawalFiat(address indexed merchant, uint256 indexed orderId, bytes32 currency, uint256 amount)",
   "event WithdrawalUSDC(address indexed merchant, uint256 amount)",
   "event WithdrawalReconciled(address indexed merchant, uint256 indexed orderId, uint256 amount)",
+  "event MerchantFrozen(address indexed merchant)",
+  "event MerchantUnfrozen(address indexed merchant)",
   // Custom ERRORS — every one the contract can revert with. Without these in the
   // ABI, viem can't decode a revert and shows a raw hex signature (e.g. the
   // "0x10cbb591 not found on ABI" = WithdrawalInFlight the user hit). With them,
