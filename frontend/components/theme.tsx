@@ -23,9 +23,25 @@ function systemPrefersDark() {
   return window.matchMedia?.("(prefers-color-scheme: dark)").matches;
 }
 
+// Status bar (theme-color) matches the app's own resolved theme, not the OS's.
+const BG_LIGHT = "#ffffff";
+const BG_DARK = "#0a0e16";
+
+function setThemeColorMeta(resolved) {
+  if (typeof document === "undefined") return;
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute("name", "theme-color");
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute("content", resolved === "dark" ? BG_DARK : BG_LIGHT);
+}
+
 function apply(resolved) {
   if (typeof document === "undefined") return;
   document.documentElement.setAttribute("data-theme", resolved);
+  setThemeColorMeta(resolved);
 }
 
 /** Inline script (runs before paint) to set the theme and avoid a flash. */
@@ -33,7 +49,15 @@ export const themeInitScript = `
 (function(){try{
   var t = localStorage.getItem('${KEY}') || '${DEFAULT}';
   var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  var resolved = dark ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', resolved);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.setAttribute('name', 'theme-color');
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute('content', resolved === 'dark' ? '${BG_DARK}' : '${BG_LIGHT}');
 }catch(e){}})();
 `;
 
